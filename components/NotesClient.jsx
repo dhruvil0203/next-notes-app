@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
-const NotesClient = () => {
+const NotesClient = ({intialNotes}) => {
+  const [notes, setNotes] = useState(intialNotes ?? []);
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
@@ -18,9 +20,18 @@ const NotesClient = () => {
         body: JSON.stringify({ title, content }),
       });
       const result = await response.json();
+      if(result.success){
+        setTitle("");
+        setContent("");
+        setNotes([...notes, result.data]);
+        toast.success("Note Created Successfully");
+      }
       console.log(result);
       setLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to create note");
+    }
   };
   return (
     <div className="space-y-6">
@@ -57,6 +68,31 @@ const NotesClient = () => {
           </button>
         </div>
       </form>
+      <div className="space-y-4 ">
+        <h2>Your Notes ({notes.length})</h2>
+        {
+        notes.length === 0 ? (<p className="text-gray-500">Not notes yet.Create Your First Note Above</p>) : (
+          notes.map((note)=>(
+            <div key={note._id} className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex justify-between items-start mb-2 ">
+                <h3 className="text-gray-800 font-semibold text-lg">{note.title}</h3>
+                <div className="flex gap-2">
+                  <button className="text-blue-500 hover:text-blue-700 text-sm">Edit</button>
+                  <button className="text-red-500 hover:text-red-700 text-sm">Delete</button>
+                </div>
+                </div>
+                <p className="text-gray-700 mb-2">{note.content}</p>
+                <p className="text-sm text-gray-500">Created:{new Date(note.createdAt).toLocaleDateString()}</p>
+                {
+                  note.updatedAt !== note.createdAt && (
+                    <p className="text-sm text-gray-500">Updated:{new Date(note.updatedAt).toLocaleDateString()}</p>
+                  )
+                }
+            </div>
+          ))
+        )        
+}
+      </div>
     </div>
   );
 };

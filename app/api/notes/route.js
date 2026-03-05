@@ -6,7 +6,7 @@ export async function GET() {
   try {
     await dbConnection();
     const notes = await Note.find({}).sort({ createdAt: -1 });
-    return NextResponse.json({ success: true, data: notes });   
+    return NextResponse.json({ success: true, data: notes });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: error.message },
