@@ -4,7 +4,6 @@ import { toast } from "react-hot-toast";
 import { useTheme } from "@/app/context/ThemeContext";
 import { BsSun, BsMoon } from "react-icons/bs";
 
-
 const inputStyle = {
   width: "100%",
   padding: "11px 14px",
@@ -66,7 +65,6 @@ const ghostBtnStyle = {
   transition: "all 0.2s ease",
 };
 
-
 const onFocus = (e) => {
   e.target.style.borderColor = "var(--accent)";
   e.target.style.boxShadow = "0 0 0 3px var(--accent-muted)";
@@ -75,7 +73,6 @@ const onBlur = (e) => {
   e.target.style.borderColor = "var(--border)";
   e.target.style.boxShadow = "none";
 };
-
 
 const NotesClient = ({ intialNotes }) => {
   const { theme, toggle } = useTheme();
@@ -203,7 +200,6 @@ const NotesClient = ({ intialNotes }) => {
         </button>
       </div>
 
-
       <form onSubmit={createNote} style={cardStyle}>
         <h2 style={{
           fontSize: "1.05rem",
@@ -214,10 +210,7 @@ const NotesClient = ({ intialNotes }) => {
           alignItems: "center",
           gap: "8px",
         }}>
-          <span style={{
-            width: "6px", height: "6px", borderRadius: "50%",
-            background: "var(--accent)", display: "inline-block",
-          }} />
+          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)", display: "inline-block" }} />
           Create New Note
         </h2>
 
@@ -235,7 +228,6 @@ const NotesClient = ({ intialNotes }) => {
               onBlur={onBlur}
             />
           </div>
-
           <div>
             <label style={labelStyle}>Content</label>
             <textarea
@@ -248,7 +240,6 @@ const NotesClient = ({ intialNotes }) => {
               onBlur={onBlur}
             />
           </div>
-
           <div>
             <button
               type="submit"
@@ -270,14 +261,11 @@ const NotesClient = ({ intialNotes }) => {
                   <span style={{ width: "14px", height: "14px", border: "2px solid rgba(255,255,255,0.4)", borderTopColor: "#fff", borderRadius: "50%", display: "inline-block", animation: "spin 0.7s linear infinite" }} />
                   Creating...
                 </>
-              ) : (
-                <>＋ Create Note</>
-              )}
+              ) : <>＋ Create Note</>}
             </button>
           </div>
         </div>
       </form>
-
 
       <div>
         <h3 style={{
@@ -292,13 +280,7 @@ const NotesClient = ({ intialNotes }) => {
         </h3>
 
         {notes.length === 0 ? (
-          <div style={{
-            ...cardStyle,
-            textAlign: "center",
-            padding: "40px 24px",
-            color: "var(--muted)",
-            fontSize: "0.9rem",
-          }}>
+          <div style={{ ...cardStyle, textAlign: "center", padding: "40px 24px", color: "var(--muted)", fontSize: "0.9rem" }}>
             No notes yet. Create your first note above ↑
           </div>
         ) : (
@@ -306,7 +288,6 @@ const NotesClient = ({ intialNotes }) => {
             {notes.map((note) => (
               <div key={note._id} style={cardStyle}>
                 {editingId === note._id ? (
-
                   <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                     <div>
                       <label style={labelStyle}>Title</label>
@@ -354,7 +335,6 @@ const NotesClient = ({ intialNotes }) => {
                     </div>
                   </div>
                 ) : (
-
                   <>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
                       <h3 style={{ fontWeight: 700, fontSize: "1rem", color: "var(--foreground)" }}>
@@ -409,7 +389,6 @@ const NotesClient = ({ intialNotes }) => {
           </div>
         )}
       </div>
-
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
