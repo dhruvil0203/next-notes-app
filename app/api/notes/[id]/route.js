@@ -1,6 +1,7 @@
 import dbConnection from "@/lib/db";
 import Note from "@/models/notes";
 import { NextResponse } from "next/server";
+import redis, { isRedisReady } from "@/lib/redis";
 
 export async function DELETE(request, { params }) {
   try {
@@ -15,6 +16,12 @@ export async function DELETE(request, { params }) {
         { success: false, error: "Note not found" },
         { status: 404 }
       );
+    }
+
+    try {
+      if (isRedisReady()) await redis.del("notes");
+    } catch (redisError) {
+      console.error("Redis DEL error:", redisError.message);
     }
 
     return NextResponse.json({ success: true, data: {} });
@@ -46,6 +53,12 @@ export async function PUT(request, { params }) {
         { success: false, error: "Note not found" },
         { status: 404 }
       );
+    }
+
+    try {
+      if (isRedisReady()) await redis.del("notes");
+    } catch (redisError) {
+      console.error("Redis DEL error:", redisError.message);
     }
 
     return NextResponse.json({ success: true, data: note });
