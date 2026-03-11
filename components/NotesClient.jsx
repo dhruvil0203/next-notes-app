@@ -115,7 +115,9 @@ const NotesClient = ({ intialNotes }) => {
       const result = await response.json();
       if (result.success) {
         setNotes(notes.filter((note) => note._id !== id));
-        toast.success("Notes deleted successfully");
+        toast.success("Note deleted successfully");
+      } else {
+        toast.error(result.error || "Failed to delete note");
       }
     } catch (error) {
       console.log("Error deleting note: ", error);
