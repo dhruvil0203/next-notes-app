@@ -114,6 +114,7 @@ const NotesClient = ({ intialNotes }) => {
       const response = await fetch(`/api/notes/${id}`, { method: "DELETE" });
       const result = await response.json();
       if (result.success) {
+        // Remove from UI whether it existed in DB or was a ghost note (stale cache)
         setNotes(notes.filter((note) => note._id !== id));
         toast.success("Note deleted successfully");
       } else {
