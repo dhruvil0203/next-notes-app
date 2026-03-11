@@ -1,14 +1,14 @@
 import dbConnection from "@/lib/db";
 import Note from "@/models/notes";
 import { NextResponse } from "next/server";
-import redis, { isRedisReady } from "@/lib/redis";
+import redis from "@/lib/redis";
 
 export async function GET() {
   try {
     await dbConnection();
 
     try {
-      if (isRedisReady()) {
+      if (redis) {
         const cachedNotes = await redis.get("notes");
         if (cachedNotes) {
           return NextResponse.json({ success: true, data: JSON.parse(cachedNotes) });
@@ -21,7 +21,7 @@ export async function GET() {
     const notes = await Note.find({}).sort({ createdAt: -1 });
 
     try {
-      if (isRedisReady()) await redis.set("notes", JSON.stringify(notes), "EX", 60);
+      if (redis) await redis.set("notes", JSON.stringify(notes), "EX", 60);
     } catch (redisError) {
       console.error("Redis SET error:", redisError.message);
     }
@@ -42,7 +42,7 @@ export async function POST(request) {
     const note = await Note.create(body);
 
     try {
-      if (isRedisReady()) await redis.del("notes");
+      if (redis) await redis.del("notes");
     } catch (redisError) {
       console.error("Redis DEL error:", redisError.message);
     }

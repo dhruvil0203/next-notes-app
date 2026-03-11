@@ -1,7 +1,7 @@
 import dbConnection from "@/lib/db";
 import Note from "@/models/notes";
 import { NextResponse } from "next/server";
-import redis, { isRedisReady } from "@/lib/redis";
+import redis from "@/lib/redis";
 
 export async function DELETE(request, { params }) {
   try {
@@ -19,7 +19,7 @@ export async function DELETE(request, { params }) {
     }
 
     try {
-      if (isRedisReady()) await redis.del("notes");
+      if (redis) await redis.del("notes");
     } catch (redisError) {
       console.error("Redis DEL error:", redisError.message);
     }
@@ -56,7 +56,7 @@ export async function PUT(request, { params }) {
     }
 
     try {
-      if (isRedisReady()) await redis.del("notes");
+      if (redis) await redis.del("notes");
     } catch (redisError) {
       console.error("Redis DEL error:", redisError.message);
     }
